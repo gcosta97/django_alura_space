@@ -1,0 +1,89 @@
+Django x Django Rest
+
+** DJANGO **
+-> Desenvolvimento de aplicações web
+-> Possui uma estrutura com ORM próprio, suporte à virtualização, autenticação e Templates.
+    |-> ORM: Mapeador de objeto-relacional. O ORM do Django é fornecido com construções especiais de abstração que podem
+     ser usadas para criar consultas complexas ao banco de dados. Em outras palavras, no lugar de realizar uma ação
+     direta no banco de dados com código SQL por exemplo, utilizamos o ORM como ponte de comunicação entre o banco e a
+     aplicação.
+-> O Django utiliza um padrão similar ao MVC model-view-controller, porém, aqui chamado de MTV (model-template-view),
+onde dividimos a aplicação em camadas ou partes, tornando o código mais organizado e legível.
+    |-> M: Model Regras de negócio, como o model do MVC.
+       T: Template Arquivo html que será renderizado pela view.
+       V: View Equivalente ao controller do MVC.
+
+** DJANGO REST FRAMEWORK **
+-> Desenvolvimento de web API's.
+-> Gera uma API navegável que auxilia na usabilidade para os desenvolvedores. Além disso, possui um sistema de
+autenticação e serialização dos dados.
+-> O Django Rest funciona como um complemento ao Django, isso significa que é necessária a instalação do Django, e
+consequentemente, do Rest Framework.
+
+**PARA SABER MAIS**
+
+-> Portas de comunicação mais utilizadas em TCP(Transmission Control Protocol) e suas funções
+    80	HTTP
+    433	HTTPS
+    22	SSH
+    53	DNS
+    25	SMTP
+    465	SMTPS
+    20, 21	FTP
+    67, 68	DHCP
+
+------------------------------------------------------------------------------------------------------------------------
+
+** ANOTAÇÕES CÓDIGOS **
+
+-> É importante isolar informações sensíveis em variáveis de ambiente, para que não fiquem públicas.
+-> Instalar 'python_dotenv' e importar 'from dotenv import load_dotenv'.
+-> criar um arquivo chamado '.env', para definição dos valores das variaveis de ambiente (ver ex em settings.py).
+-> Antes de subir para um repositório, criar um '.gitignore', site gitignore.io (pesquisa o framework)
+
+-------------------------------------------------------------------------------------------------------------------------
+
+** COMANDOS INICIALIZADORES **
+
+-> 'django-admin help'
+
+-> 'django-admin startproject setup .': Inicia um novo projeto, 'setup .' é o nome da pasta e o ponto é para que não
+seja criada uma subpasta.
+
+-> 'django-admin manage.py runserver'
+
+-> 'python manage.py startapp nome_do_app': Cria um app (um projeto pode conter vários apps). O nome dos apps adicionados
+tem que ser adicionados ao arquivo 'settings.py' em 'INSTALLED_APPS'.
+
+------------------------------------------------------------------------------------------------------------------------
+
+** CRIAÇÃO DE APPS **
+
+	|-> No arquivo 'settings.py' em 'INSTALLED_APPS', adicionar os nomes dos APPs criados.
+
+	|-> Pag 'views.py' (dentro do APP): Responsável por exibir os conteúdos para o usuário.
+
+	|-> É possível fazer o isolamento das urls utilizadas pelos apps, criando um arquivo 'urls.py' dentro do app e fazendo a chamada no arquivo principal no 'urls.py' do 	setup (arquivo principal do projeto).
+
+	|-> Com a utilização do HTML e CSS:
+      	|-> Em TEMPLATES = 'DIRS': Localização dos arquivos HTML (em 'settings.py');
+
+      	|-> Para utilizar os arquivos CSS: 
+			|-> Criar uma pasta 'static' dentro da pasta 'setup';
+			|-> Adicionar as variaveis STATICFILES_DIRS = [os.path.join(BASE_DIR, 'setup/static')] e STATIC_ROOT = os.path.join(BASE_DIR, 'static') (em 'settings.py');
+			|-> Copiar os arquivos css (pastas 'assets' e 'style') para dentro da pasta 'static' criada em setup;
+			|-> Rodar o comando 'python manage.py collectstatic': Pega os arquivos estaticos copiados e os processa para utilização;
+			|-> é criada uma pasta 'static' na raiz do projeto (pela instrução STATIC_ROOT)
+			|-> No arquivo 'index.html', em 'Templates/galeria', adicionar {% load static %} no topo do arquivo, para indicar que possui arquivos estaticos.
+			|-> modificar a tag de carregamento do css para o caminho absoluto: <link rel="stylesheet" href="{% static '/styles/style.css' %}">
+				|-> Alterar o caminho de todos os objetos estáticos para o padrão acima: {% static 'diretorio/imagem.png' %}
+
+    		|-> Para a redução de códigos html, é comum separar a base da página (base.html) e funcionalidades comuns entres as páginas (como menus laterais, estruturas que 			envolvem botões, são chamadas de 'partials') -- Ver exemplo no projeto 'Django'
+
+------------------------------------------------------------------------------------------------------------------------
+*** GIT ***
+-> 'git init': inicia um repositório vazio local
+-> 'git add .': copia os arquivos do projeto para o diretorio local
+-> 'git commit -m "descrição commit"'
+-> 'git remote add origin "https://github.com/gcosta97/django_alura_space.git"': apontamento para qual repositorio remoto
+-> 'git push orgin master'

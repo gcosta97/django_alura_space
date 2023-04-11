@@ -1,0 +1,29 @@
+-> O Django já vem com um SQLite default
+
+-> O ORM faz a tradução dos comandos python para consultas SQL. As classes representam as tabelas e suas instancias as linhas.
+
+-> Quando um app é criado, já vem com um arquivo 'models.py', onde são criadas essas classes.
+
+-> Assim que for criada a classe, precisam ser rodados dois comandos:
+	|-> 'python manage.py makemigrations': Cria novas migrações com base nas alterações detectadas nos modelos.
+
+	|-> 'python manage.py migrate': Sincroniza o estado do banco de dados com o conjunto atual de modelos e migrações.
+
+	|-> Sempre que houver uma alteração nos models, tem de ser rodados os comandos novamente.
+
+	|-> Instalar a extensão 'SQLite Viwer (Florian Klampfer)' para visualização das tabelas no proprio VSCode.
+
+-> 'python manage.py shell': Abre um shell do django dentro do terminal.
+	|-> Depois de uma instância da classe criada, o método 'nome_da_instancia.save()' salva aquela linha no banco.
+	|-> 'NomeDaClasse.objects.all()': Mostra todos os elementos do banco.
+
+-> Para utilização dos objetos no banco, ver o exemplo: códigos 'views.py' (do app) e 'index.html' e 'imagem.html'
+
+-> Para acessar o Django Admin (localhost:8000/admin), é preciso criar o super usuário. No prompt de comando:
+	|-> 'python manage.py createsuperuser'
+	|-> Para fazer as alterações na pag admin 'admin.py', dentro do app
+	
+-> Para ser capaz de fazer um upload da imagem quando for adicionar uma nova pelo admin:
+	|-> Adicionar em 'setup/settings.py': MEDIA_ROOT = os.path.join(BASE_DIR, "media") e MEDIA_URL = "/media/"
+	|-> Adicionar uma chamada static em 'setup/urls.py': ver projeto exemplo
+
