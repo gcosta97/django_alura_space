@@ -33,9 +33,9 @@ def buscar(request):
         if nome_a_buscar:
             fotografias_limpas = limpar_nomes_banco_pesquisa(Fotografia)
 
-            for i in range(len(fotografias_limpas)):
-                if nome_a_buscar in fotografias_limpas[i].nome:
-                    ids_correspondentes.append(fotografias_limpas[i].id)
+            for fotografia in fotografias_limpas:
+                if nome_a_buscar in fotografia.nome:
+                    ids_correspondentes.append(fotografia.id)
 
             fotografias = Fotografia.objects.filter(id__in = ids_correspondentes)
 
