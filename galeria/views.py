@@ -28,21 +28,19 @@ def buscar(request):
 
         nome_a_buscar = request.GET["buscar"]
         nome_a_buscar = unicodedata.normalize("NFD", nome_a_buscar).encode("ascii", "ignore").decode("utf-8").lower()
-        fotografias = []
+        ids_correspondentes = []
 
         if nome_a_buscar:
             fotografias_limpas = limpar_nomes_banco_pesquisa(Fotografia)
 
-        for i in range(len(fotografias_limpas)):
-            if nome_a_buscar in fotografias_limpas[i].nome:
-                indice_id = i + 1
-                fotografias.append(Fotografia.objects.filter(id = indice_id))
-        
-        print (fotografias_limpas)
-        print(fotografias)
-        
+            for i in range(len(fotografias_limpas)):
+                if nome_a_buscar in fotografias_limpas[i].nome:
+                    ids_correspondentes.append(fotografias_limpas[i].id)
 
-    for element in fotografias:
-        return render(request, "galeria/buscar.html", {"cards": element})
-    
-### CORRIGIR A BUSCA DA SEGUNDA GALÁXIA ###
+            fotografias = Fotografia.objects.filter(id__in = ids_correspondentes)
+
+        else:
+            fotografias = []
+
+        
+        return render(request, "galeria/buscar.html", {"cards": fotografias})

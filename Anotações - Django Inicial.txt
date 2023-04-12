@@ -39,7 +39,7 @@ consequentemente, do Rest Framework.
 -> É importante isolar informações sensíveis em variáveis de ambiente, para que não fiquem públicas.
 -> Instalar 'python_dotenv' e importar 'from dotenv import load_dotenv'.
 -> criar um arquivo chamado '.env', para definição dos valores das variaveis de ambiente (ver ex em settings.py).
--> Antes de subir para um repositório, criar um '.gitignore', site gitignore.io (pesquisa o framework)
+-> Antes de subir para um repositório, criar um '.gitignore', site "gitignore.io" (pesquisa o framework)
 
 -------------------------------------------------------------------------------------------------------------------------
 
