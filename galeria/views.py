@@ -1,11 +1,16 @@
 # Responsável por exibir os conteúdos para o usuário
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 import unicodedata
 
 from galeria.models import Fotografia
 
 def index(request):  # Responsável pela página principal da aplicação
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado.")
+        return redirect('login')
+    
     fotografias = Fotografia.objects.filter(publicada=True)
     return render(request, 'galeria/index.html',{"cards": fotografias})
 
@@ -23,6 +28,9 @@ def limpar_nomes_banco_pesquisa(nome_banco):
     return fotografias
 
 def buscar(request):
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado.")
+        return redirect('login')
     
     if "buscar" in request.GET:
 
