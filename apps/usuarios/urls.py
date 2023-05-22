@@ -1,7 +1,7 @@
 # Isola as urls relacionadas à esse app
 
 from django.urls import path
-from usuarios.views import login, cadastro, logout
+from apps.usuarios.views import login, cadastro, logout
 
 urlpatterns = [
     path('login', login, name='login'),
