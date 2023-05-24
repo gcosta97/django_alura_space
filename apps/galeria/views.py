@@ -8,10 +8,7 @@ from apps.galeria.models import Fotografia
 from apps.galeria.forms import FotografiaForms
 
 def index(request):  # Responsável pela página principal da aplicação
-    if not request.user.is_authenticated:
-        messages.error(request, "Usuário não logado.")
-        return redirect('login')
-    
+  
     fotografias = Fotografia.objects.filter(publicada=True)
     return render(request, 'galeria/index.html',{"cards": fotografias})
 
@@ -29,12 +26,8 @@ def limpar_nomes_banco_pesquisa(nome_banco):
     return fotografias
 
 def buscar(request):
-    if not request.user.is_authenticated:
-        messages.error(request, "Usuário não logado.")
-        return redirect('login')
     
     if "buscar" in request.GET:
-
         nome_a_buscar = request.GET["buscar"]
         nome_a_buscar = unicodedata.normalize("NFD", nome_a_buscar).encode("ascii", "ignore").decode("utf-8").lower()
         ids_correspondentes = []
@@ -52,7 +45,7 @@ def buscar(request):
             fotografias = []
 
         
-        return render(request, "galeria/buscar.html", {"cards": fotografias})
+        return render(request, "galeria/index.html", {"cards": fotografias})
 
 def nova_imagem(request):
     if not request.user.is_authenticated:
@@ -69,8 +62,26 @@ def nova_imagem(request):
 
     return render(request, 'galeria/nova_imagem.html', {'form': form})
 
-def editar_imagem(request):
-    pass
+def editar_imagem(request, foto_id):
+    fotografia = Fotografia.objects.get(id=foto_id)
+    form = FotografiaForms(instance=fotografia)
 
-def deletar_imagem(request):
-    pass
+    if request.method == 'POST':
+        form = FotografiaForms(request.POST, request.FILES, instance=fotografia)
+        if form.is_valid:
+            form.save()
+            messages.success(request, 'Foto editada com sucesso.')
+            return render(request, 'galeria/imagem.html', {"fotografia": fotografia})
+
+    return render(request, 'galeria/editar_imagem.html', {'form':form, 'foto_id':foto_id})
+
+def deletar_imagem(request, foto_id):
+    fotografia = Fotografia.objects.get(id=foto_id)
+    fotografia.delete()
+    messages.success(request, 'Foto excluída com sucesso.')
+    return redirect('home')
+
+def filtro(request, categoria):
+    fotografias = Fotografia.objects.filter(publicada=True, categoria=categoria)
+
+    return render(request, 'galeria/index.html', {"cards": fotografias, 'categoria':categoria})

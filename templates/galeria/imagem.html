@@ -17,12 +17,29 @@
                     <p class="imagem__descricao">{{ fotografia.legenda }}</p>
                     <p class="imagem__texto">{{ fotografia.descricao }}</p>
                 </div>
-                <div>
-                    <a href="{% url 'editar_imagem' %}"> <button class="btn btn-success col-12" style="padding: top 5px;"> Editar </button> </a>
-                    <a href="{% url 'deletar_imagem' %}"> <button class="btn btn-danger col-12" style="padding: top 5px;"> Deletar </button> </a>
-                </div>
             </div>
         </div>
     </section>
+    {% if user.is_authenticated %}
+        <div>
+            <a href="{% url 'editar_imagem' fotografia.id %}"> 
+                <button class="btn btn-success col-12" style="padding: top 10px;"> Editar </button> 
+            </a>
+            <a> 
+                <p id="image_id" hidden>{{fotografia.id}}</p>
+                <button class="btn btn-danger col-12" style="padding: top 10px;" onclick="Confirmation()"> Deletar </button>
+                <script>
+                    function Confirmation(){
+                        if (confirm('Tem certeza que deseja excluir a imagem?')){
+                            var id_imagem =document.getElementById("image_id").innerText
+                            window.location.href = "/deletar-imagem/" + id_imagem;
+                        } else {
+                            return false
+                        }
+                    }
+                </script>
+            </a>
+        </div>
+    {% endif %}
 </section>
 {% endblock %}
