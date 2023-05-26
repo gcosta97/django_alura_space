@@ -1,0 +1,37 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block content %}
+
+<form action="{% url 'aprovar_imagens' %}" method="POST">
+    {% csrf_token %}
+    <div>
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th style="border-right: transparent;">NOME DA IMAGEM</th>
+                        <th style="width: auto; text-align: center; border-left: transparent;">PUBLICADA</th>
+                </thead>
+                <tbody>
+                    {%for imagem in imagens %}
+                    <tr>
+                        <td style="border-right: transparent;"><a href="{% url 'imagem' imagem.id %}" style="color: white;">{{imagem}}</a></td> 
+                        <td style="border-left: transparent; text-align: right;">
+                            {% if imagem.publicada %}
+                            <input type="checkbox" checked="checked" value={{imagem.id}} name="boxes">
+                            {% else %}
+                            <input type="checkbox" value={{imagem.id}} name="boxes">
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+        <br/>
+            <button class="btn btn-blue col-12" style="padding: top 5px;" type="submit"> SALVAR </button>
+    </div>
+    
+</form>
+
+    {% endblock %}

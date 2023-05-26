@@ -7,6 +7,9 @@
         <a href="{% url 'cadastro' %}"><img src="{% static '/assets/ícones/1x/cadastrar_login.png' %}"> Cadastro</a>
         {% if user.is_authenticated %}
             <a href= "{% url 'nova_imagem' %}"><img src="{% static '/assets/ícones/1x/add_image.png' %}"> Adicionar imagem</a>
+            {% if user.is_superuser %}
+                <a href= "{% url 'aprovar_imagens' %}"><img src="{% static '/assets/ícones/1x/aprovar-imagens.png' %}"> Aprovar imagens</a>
+            {% endif %}
             <a href= "{% url 'logout' %}"><img src="{% static '/assets/ícones/1x/logout_icon.png' %}"> Logout</a>
         {% endif %}
     </nav>

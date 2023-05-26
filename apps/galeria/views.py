@@ -5,7 +5,7 @@ from django.contrib import messages
 import unicodedata
 
 from apps.galeria.models import Fotografia
-from apps.galeria.forms import FotografiaForms
+from apps.galeria.forms import FotografiaForms, AprovarImagensForms
 
 def index(request):  # Responsável pela página principal da aplicação
   
@@ -22,6 +22,7 @@ def limpar_nomes_banco_pesquisa(nome_banco):
 
     for fotografia in fotografias:
         fotografia.nome = unicodedata.normalize("NFD", fotografia.nome).encode("ascii", "ignore").decode("utf-8").lower()
+        fotografia.categoria = unicodedata.normalize("NFD", fotografia.categoria).encode("ascii", "ignore").decode("utf-8").lower()
     
     return fotografias
 
@@ -36,7 +37,7 @@ def buscar(request):
             fotografias_limpas = limpar_nomes_banco_pesquisa(Fotografia)
 
             for fotografia in fotografias_limpas:
-                if nome_a_buscar in fotografia.nome:
+                if nome_a_buscar in fotografia.nome or nome_a_buscar in fotografia.categoria:
                     ids_correspondentes.append(fotografia.id)
 
             fotografias = Fotografia.objects.filter(id__in = ids_correspondentes)
@@ -85,3 +86,23 @@ def filtro(request, categoria):
     fotografias = Fotografia.objects.filter(publicada=True, categoria=categoria)
 
     return render(request, 'galeria/index.html', {"cards": fotografias, 'categoria':categoria})
+
+def aprovar_imagens(request):
+    if not request.user.is_superuser:
+        messages.error(request, 'Você não tem permissão para acessar essa página')
+        return redirect('login')
+    
+    imagens = Fotografia.objects.all()
+    if request.method == 'POST':
+        lista_ids = request.POST.getlist('boxes')
+        
+        imagens.update(publicada=False)
+
+        imagens.filter(pk__in=lista_ids).update(publicada=True)
+
+        messages.success(request, 'Alterações salvas com sucesso!')
+        return redirect('home')
+
+    
+    return render(request, 'galeria/aprovar_imagens.html', {'imagens': imagens})
+    
